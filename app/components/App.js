@@ -1,12 +1,16 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var Blackjackbutton = require('./Blackjackbutton');
+var Pokerbutton = require('./Pokerbutton');
+var NameForm = require('./form');
+
 
 var NavBar = React.createClass({
   render: function () {
-    var pages = ['home ', 'blog ', 'pics ', 'bio ', 'art ', 'shop ', 'about ', 'contact '];
+    var pages = ['Home ', 'Get Started ', 'About ', 'Contact '];
     var navLinks = pages.map(function(page){
       return (
-        <a href={'/' + page}>
+        <a href={'/' + page} style = {{color: 'white', fontSize: '16px'}}>
           {page}
         </a>
       );
@@ -16,57 +20,7 @@ var NavBar = React.createClass({
   }
 });
 
-var blackjackbuttonstyle = {
-  backgroundColor: 'green',
-  position: 'fixed',
-  height:'150px',
-  width:'150px',
-  fontSize: '20px',
-  color: 'white',
-  top: '200px',
-  left: '37%',
-  borderRadius: '25px'
-}
-var pokerbuttonstyle = {
-  backgroundColor: 'green',
-  position:'fixed',
-  height:'150px',
-  width:'150px',
-  fontSize: '20px',
-  color: 'white',
-  top: '200px',
-  right: '37%',
-  borderRadius: '25px'
-}
 
-var Blackjackbutton = React.createClass({
-  getDefaultProps: function () {
-    return { text: 'Play BlackJack!' };
-  },
-  handleClick: function() {
-      window.location = '/BlackJack';
-    },
-  render: function () {
-    return (
-      <button style = {blackjackbuttonstyle} onClick={this.handleClick()}>
-        {this.props.text}
-      </button>
-    );
-  }
-});
-
-var Pokerbutton = React.createClass({
-  getDefaultProps: function () {
-    return { text: 'Play Poker!' };
-  },
-  render: function () {
-    return (
-      <button style = {pokerbuttonstyle}>
-        {this.props.text}
-      </button>
-    );
-  }
-});
 
 var App = React.createClass({
   getInitialState: function() {
@@ -81,6 +35,8 @@ var App = React.createClass({
         <h1 style = {{textAlign: 'center', color: 'white'}}>{this.state.title}</h1>
         <Blackjackbutton />
         <Pokerbutton />
+        <NameForm />
+
       </div>
     );
   }
