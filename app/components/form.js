@@ -1,35 +1,54 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-class NameForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {name: ''};
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+var style = {
+  position: 'fixed',
+  color: 'white',
+  top: '50%',
+  left: '37%'
+}
 
-  handleChange(event) {
-    this.setState({name: event.target.value});
-  }
+class NameForm extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {address: '',
+                    amount: ''
+                  };
+      // this.handleChange = this.handleChange.bind(this);
+      // this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
 
   handleSubmit(event) {
-    alert('Thank you for signing up with us! Your username is ' );
+
     event.preventDefault();
+    // console.log(event.target.walletAddress.value);
+    // console.log(event.target.depositAmount.value);
+    this.state.address = event.target.walletAddress.value;
+    this.state.amount = event.target.depositAmount.value;
+
+    alert('Thank you for signing up with us! Your wallet address is: ' + this.state.address
+          + '. Your account balance is ' + this.state.amount
+        );
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} style = {{color: 'white'}}>
+      <form onSubmit={this.handleSubmit.bind(this)} style = {style}>
         <h1>Get Started!</h1>
         <label>
-          Name:
-          <input
-                    value = {this.state.userInput}
-                    type="text"
-                    onChange={this.handleUserInput} />
+          Wallet Address:
+              <input name = "walletAddress"
+                      type = "text"/>
         </label>
-        <input type="submit" value="Submit" />
+        <br/>
+        <label>
+          Deposit Amount:
+          <input name ="depositAmount"
+                 type = "text"/>
+        </label>
+        <br/>
+        <input type = "submit" value = "Submit" />
       </form>
     );
   }
