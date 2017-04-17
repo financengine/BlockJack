@@ -34,7 +34,8 @@ var Table = React.createClass({
         playerscore: '0',
         playerone: '0',
         playertwo: '0',
-        playerthree: '0'
+        playerthree: '0',
+        amount: 100
       };
    },
 
@@ -43,33 +44,33 @@ var Table = React.createClass({
     return number;
   },
   handleClick(event) {
-
+    am = this.state.amount - 5;
+    this.setState({amount: am});
     var player = this.randomNumber();
     this.setState({playerscore: player});
-
 
     var one = this.randomNumber();
     this.setState({playerone: one});
 
-
     var two = this.randomNumber();
     this.setState({playertwo: two});
-
 
     var three = this.randomNumber();
     this.setState({playerthree: three});
     var highest = Math.max(player, one, two, three);
     this.setState({highestnumber: highest});
     if (Math.max(player, one, two, three) == player) {
-      alert('Congrats! You won the pot!');
+      alert('Congrats! You won the pot: 20$');
+      am = this.state.amount + 20;
+      this.setState({amount: am})
     }
-
   },
   render: function () {
     return (
       <div style = {{color: 'white'}}>
-        <h1 style = {{color: 'white'}}>Play BlackJack!</h1>
-
+        <h1>Play BlackJack!</h1>
+        <h2>Buy In: 5$</h2>
+        <h2>Balance: {this.state.amount}$</h2>
         <div style = {{color: 'white'}}>
           <h3>Highest Score : {this.state.highestnumber}</h3>
           <h3>Player Score: {this.state.playerscore}</h3>
@@ -98,7 +99,6 @@ var App = React.createClass({
     );
   }
 });
-
 ReactDOM.render(<App />,
                document.getElementById('app'));
 module.exports = App;
