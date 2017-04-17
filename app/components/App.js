@@ -61,7 +61,7 @@ var Table = React.createClass({
     this.setState({highestnumber: highest});
     if (Math.max(player, one, two, three) == player) {
       alert('Congrats! You won the pot: 20$');
-      am = this.state.amount + 20;
+      am = this.state.amount + 15;
       this.setState({amount: am})
     }
   },
