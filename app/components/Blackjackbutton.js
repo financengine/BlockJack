@@ -1,6 +1,5 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Link = require('react-router').Link;
 
 var blackjackbuttonstyle = {
   backgroundColor: 'green',
@@ -24,7 +23,7 @@ var Blackjackbutton = React.createClass({
   render: function () {
     return (
       <button style = {blackjackbuttonstyle} >
-          {this.props.text}
+        {this.props.text}
       </button>
     );
   }
