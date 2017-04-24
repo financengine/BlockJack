@@ -3,7 +3,13 @@ var ReactDOM = require('react-dom');
 var Blackjackbutton = require('./Blackjackbutton');
 var Pokerbutton = require('./Pokerbutton');
 var NameForm = require('./form');
+import Web3 from 'web3';
+const ETHEREUM_CLIENT = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
 
+var smartContractABI = [{"constant":false,"inputs":[],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"time","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"cardsDrawn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"determineWinner","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getPot","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"pot","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"buyIn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getNumPlayers","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getFirstCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"ante","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"numPlayers","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"addFunds","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[],"name":"getScore","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"stage","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getAllCards","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"dealCards","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"cashOut","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"hit","type":"bool"},{"name":"randSeed","type":"uint256"}],"name":"play","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"addPlayer","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"getCards","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"test","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getBuyIn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[{"name":"randSeed","type":"uint256"},{"name":"playerCap","type":"uint256"},{"name":"bet","type":"uint256"}],"payable":false,"type":"constructor"}]
+
+var smartContractAddress = '0x1e35982f5d8b48931d39b81d1caecc9537f666c5';
+const smartContract = ETHEREUM_CLIENT.eth.contract(smartContractABI).at(smartContractAddress);
 
 var NavBar = React.createClass({
   render: function () {
@@ -15,87 +21,33 @@ var NavBar = React.createClass({
         </a>
       );
     });
-
     return <nav>{navLinks}</nav>;
   }
 });
 
-
-/*<NavBar />
-<h1 style = {{textAlign: 'center', color: 'white'}}>{this.state.title}</h1>
-<Blackjackbutton />
-<Pokerbutton />
-<NameForm />*/
-// --------------------------------
-/*var Table = React.createClass({
-  getInitialState: function() {
-      return {
-        highestnumber: '0',
-        playerscore: '0',
-        playerone: '0',
-        playertwo: '0',
-        playerthree: '0',
-        amount: 100
-      };
-   },
-
-  randomNumber: function() {
-    number = Math.floor(Math.random() * (21 - 2)) + 2;
-    return number;
-  },
-  handleClick(event) {
-    am = this.state.amount - 5;
-    this.setState({amount: am});
-    var player = this.randomNumber();
-    this.setState({playerscore: player});
-
-    var one = this.randomNumber();
-    this.setState({playerone: one});
-
-    var two = this.randomNumber();
-    this.setState({playertwo: two});
-
-    var three = this.randomNumber();
-    this.setState({playerthree: three});
-    var highest = Math.max(player, one, two, three);
-    this.setState({highestnumber: highest});
-    if (Math.max(player, one, two, three) == player) {
-      alert('Congrats! You won the pot: 20$');
-      am = this.state.amount + 10;
-      this.setState({amount: am})
-    }
-  },
-  render: function () {
-    return (
-      <div style = {{color: 'white'}}>
-        <h1>Play BlackJack!</h1>
-        <h2>Buy In: 5$</h2>
-        <h2>Balance: {this.state.amount}$</h2>
-        <div style = {{color: 'white'}}>
-          <h3>Highest Score : {this.state.highestnumber}</h3>
-          <h3>Player Score: {this.state.playerscore}</h3>
-        </div>
-        <button onClick={this.handleClick.bind(this)}>Bet</button>
-        <h3>Player 1 Score: {this.state.playerone}</h3>
-        <h3>Player 2 Score: {this.state.playertwo}</h3>
-        <h3>Player 3 Score: {this.state.playerthree}</h3>
-      </div>
-    );
-  }
-});
-// ------------------------------------------------------
-*/
 var App = React.createClass({
   getInitialState: function() {
     return {
-      title: "Welcome To Our Casino!"
+      title: "Welcome To Our Casino!",
+      x: ""
     }
   },
+
+  test: function() {
+    var e = smartContract.test()
+    this.setState({x: e})
+  })
+
   render: function () {
     return (
       <div>
 
+        <NavBar />
+        {test()}
+        <h1 style = {{textAlign: 'center', color: 'white'}}>{thisstate.title}</h1>
         <Blackjackbutton />
+        <Pokerbutton />
+        <NameForm />
       </div>
     );
   }
