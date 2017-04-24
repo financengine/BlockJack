@@ -27,7 +27,7 @@ var NavBar = React.createClass({
 <Pokerbutton />
 <NameForm />*/
 // --------------------------------
-var Table = React.createClass({
+/*var Table = React.createClass({
   getInitialState: function() {
       return {
         highestnumber: '0',
@@ -84,6 +84,7 @@ var Table = React.createClass({
   }
 });
 // ------------------------------------------------------
+*/
 var App = React.createClass({
   getInitialState: function() {
     return {
@@ -94,7 +95,7 @@ var App = React.createClass({
     return (
       <div>
 
-        <Table />
+        <Blackjackbutton />
       </div>
     );
   }
