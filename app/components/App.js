@@ -10,7 +10,7 @@ const ETHEREUM_CLIENT = new Web3(new Web3.providers.HttpProvider("http://localho
 var smartContractABI = [{"constant":false,"inputs":[],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"time","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"cardsDrawn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"determineWinner","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getPot","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"pot","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"buyIn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getNumPlayers","outputs":[{"name":"res","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getStageStart","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getFirstCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"ante","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getNumPasses","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"removePlayer","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"numPlayers","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"addFunds","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[],"name":"getAddr","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getScore","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"surrender","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isFull","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"stage","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getAllCards","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"pass","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"dealCards","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"hit","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"addPlayer","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"getCards","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getBuyIn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getStage","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"inputs":[{"name":"randSeed","type":"uint256"},{"name":"playerCap","type":"uint256"},{"name":"bet","type":"uint256"}],"payable":false,"type":"constructor"}]
 
 
-var smartContractAddress = '0xf20cbfa3a0141e1ac7b93a1c5a1bc0696d5f5715';
+var smartContractAddress = '0x8b48d034186effd973b96fe01e3f900f45f6c261';
 const smartContract = ETHEREUM_CLIENT.eth.contract(smartContractABI).at(smartContractAddress);
 
 
@@ -29,7 +29,7 @@ var Home = React.createClass({
 
 var App = React.createClass({
 
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       title: "Welcome To Our Casino!"
     }
@@ -38,8 +38,9 @@ var App = React.createClass({
   render: function () {
     return (
         <Board style = {{color: 'white', border: "1px solid red"}}/>
-  )
-}});
+      )
+    }
+});
 
 ReactDOM.render(<App />,
                document.getElementById('app'));

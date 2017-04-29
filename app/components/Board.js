@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-
+var Hand = require('./Hand');
 
 var Board = React.createClass({
 
@@ -53,13 +53,12 @@ var Board = React.createClass({
   render: function() {
           return (
               <div style = {{color: 'white'}}>
-              <h1>Player Two: Card One - {this.state.twohand[0]}, Suite - {this.state.twohand[1]} | Card Two - {this.state.twohand[2]}, Suite Two - {this.state.twohand[3]}</h1>
-              <h1>Player Three: Card One - {this.state.threehand[0]}, Suite - {this.state.threehand[1]} | Card Two - {this.state.threehand[2]}, Suite Two - {this.state.threehand[3]}</h1>
-              <h1>Player Four: Card One - {this.state.fourhand[0]}, Suite - {this.state.fourhand[1]} | Card Two - {this.state.fourhand[2]}, Suite Two - {this.state.fourhand[3]}</h1>
-              <h1>Player Five: Card One - {this.state.fivehand[0]}, Suite - {this.state.fivehand[1]} | Card Two - {this.state.fivehand[2]}, Suite Two - {this.state.fivehand[3]}</h1>
-                <h1>
-                  Your Hand: Card One - {this.state.yourhand[0]}, Suite - {this.state.yourhand[1]} | Card Two - {this.state.yourhand[2]}, Suite Two - {this.state.yourhand[3]}
-                </h1>
+              <Hand info = {this.state.twohand} player = "Player two" />
+              <Hand info = {this.state.threehand} player = "Player three" />
+              <Hand info = {this.state.fourhand} player = "Player four" />
+              <Hand info = {this.state.fivehand} player = "Player five" />
+
+              <Hand info = {this.state.yourhand} player = "Your Hand"/>
                 <h3>Your score: {this.state.yourhand[0] + this.state.yourhand[2]}</h3>
                 <button onClick={this.handleDeal}>Deal</button>
                 <h4>Your Balance: {this.state.yourbalance}</h4>
