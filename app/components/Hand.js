@@ -5,7 +5,12 @@ var Hand = React.createClass({
 
   getInitialState: function () {
     return {
-      title: "Welcome To Our Casino!"
+      title: "Welcome To Our Casino!",
+      Info: this.props.info,
+      Card1rank: this.props.info[0],
+      Card1suit: this.props.info[1],
+      Card2rank: this.props.info[2],
+      Card2suit: this.props.info[3],
     }
   },
 

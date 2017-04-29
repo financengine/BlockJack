@@ -26,10 +26,29 @@ var Board = React.createClass({
   },
 
   getNumber: function() {
-    var suite = this.randomNumber();
-    var card = suite % 12;
-    suite = suite % 4;
-    return [card, suite];
+    var card = this.randomNumber();
+    var deckCard = card % 52;
+    var suite = Math.floor(deckCard / 13); // 0, 1, 2, 3      
+    var rank = Math.floor(deckCard / 4) + 2;  // (0 - 12) + 2 J: 11, Q: 12, K: 13, A: 14
+    if (rank == 11) {
+      rank = "J";
+    } else if (rank == 12) {
+      rank = "Q";
+    } else if (rank == 13) {
+      rank = "K";
+    } else if (rank == 14) {
+      rank = "A";
+    }
+    if (suite == 0) {
+      suite = "C";
+    } else if (suite == 1) {
+      suite = "D";
+    } else if (suite == 2) {
+      suite = "H";
+    } else if (suite == 3) {
+      suite = "S";
+    }
+    return [rank, suite];
   },
 
   helperDeal: function() {
@@ -50,6 +69,24 @@ var Board = React.createClass({
     this.setState({fivehand: this.helperDeal()});
   },
 
+  getScore: function() {
+    var card1 = this.state.yourhand[0];
+    if (card1 == "J" || card1 == "Q" || card1 == "K") {
+      card1 = 10;
+    }
+    if (card1 == "A") {
+      card1 = 11;
+    }
+    var card2 = this.state.yourhand[2];
+    if (card2 == "J" || card2 == "Q" || card2 == "K") {
+      card2 = 10;
+    }
+    if (card2 == "A") {
+      card2 = 11;
+    }
+    return card1 + card2;
+  },
+
   render: function() {
           return (
               <div style = {{color: 'white'}}>
@@ -59,7 +96,7 @@ var Board = React.createClass({
               <Hand info = {this.state.fivehand} player = "Player five" />
 
               <Hand info = {this.state.yourhand} player = "Your Hand"/>
-                <h3>Your score: {this.state.yourhand[0] + this.state.yourhand[2]}</h3>
+                <h3>Your total: {this.getScore()}</h3>
                 <button onClick={this.handleDeal}>Deal</button>
                 <h4>Your Balance: {this.state.yourbalance}</h4>
               </div>
