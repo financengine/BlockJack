@@ -16,13 +16,7 @@ var Board = React.createClass({
       twobalance: 100,
       threebalance: 100,
       fourbalance: 100,
-      fivebalance: 100,
-      yourscore: 0,
-      twoscore: 0,
-      threescore: 0,
-      fourscore: 0,
-      fivescore: 0,
-      highestscore: ""
+      fivebalance: 100
     }
   },
 
@@ -34,25 +28,25 @@ var Board = React.createClass({
   getNumber: function() {
     var card = this.randomNumber();
     var deckCard = card % 52;
-    var suite = Math.floor(deckCard / 13); // 0, 1, 2, 3      
+    var suite = Math.floor(deckCard / 13); // 0, 1, 2, 3
     var rank = Math.floor(deckCard / 4) + 2;  // (0 - 12) + 2 J: 11, Q: 12, K: 13, A: 14
     if (rank == 11) {
-      rank = "J";
+      rank = "Jack";
     } else if (rank == 12) {
-      rank = "Q";
+      rank = "Queen";
     } else if (rank == 13) {
-      rank = "K";
+      rank = "King";
     } else if (rank == 14) {
-      rank = "A";
+      rank = "Ace";
     }
     if (suite == 0) {
-      suite = "C";
+      suite = "Clubs";
     } else if (suite == 1) {
-      suite = "D";
+      suite = "Diamonds";
     } else if (suite == 2) {
-      suite = "H";
+      suite = "Hearts";
     } else if (suite == 3) {
-      suite = "S";
+      suite = "Spades";
     }
     return [rank, suite];
   },
@@ -73,124 +67,24 @@ var Board = React.createClass({
     this.setState({threehand: this.helperDeal()});
     this.setState({fourhand: this.helperDeal()});
     this.setState({fivehand: this.helperDeal()});
-    this.setState({highestscore: this.highestScore()});
-    // this.setState({winner: this.});
   },
 
   getScore: function() {
     var card1 = this.state.yourhand[0];
-    if (card1 == "J" || card1 == "Q" || card1 == "K") {
+    if (card1 == "Jack" || card1 == "Queen" || card1 == "King") {
       card1 = 10;
     }
-    if (card1 == "A") {
+    if (card1 == "Ace") {
       card1 = 11;
     }
     var card2 = this.state.yourhand[2];
-    if (card2 == "J" || card2 == "Q" || card2 == "K") {
+    if (card2 == "Jack" || card2 == "Queen" || card2 == "King") {
       card2 = 10;
     }
-    if (card2 == "A") {
+    if (card2 == "Ace") {
       card2 = 11;
     }
-    this.setState({yourscore: card1 + card2});
     return card1 + card2;
-  },
-
-  getTwoScore: function() {
-    var card1 = this.state.twohand[0];
-    if (card1 == "J" || card1 == "Q" || card1 == "K") {
-      card1 = 10;
-    }
-    if (card1 == "A") {
-      card1 = 11;
-    }
-    var card2 = this.state.twohand[2];
-    if (card2 == "J" || card2 == "Q" || card2 == "K") {
-      card2 = 10;
-    }
-    if (card2 == "A") {
-      card2 = 11;
-    }
-    this.setState({twoscore: card1 + card2});
-    return card1 + card2;
-  },
-
-  getThreeScore: function() {
-    var card1 = this.state.threehand[0];
-    if (card1 == "J" || card1 == "Q" || card1 == "K") {
-      card1 = 10;
-    }
-    if (card1 == "A") {
-      card1 = 11;
-    }
-    var card2 = this.state.threehand[2];
-    if (card2 == "J" || card2 == "Q" || card2 == "K") {
-      card2 = 10;
-    }
-    if (card2 == "A") {
-      card2 = 11;
-    }
-    this.setState({threescore: card1 + card2});
-    return card1 + card2;
-  },
-
-  getFourScore: function() {
-    var card1 = this.state.fourhand[0];
-    if (card1 == "J" || card1 == "Q" || card1 == "K") {
-      card1 = 10;
-    }
-    if (card1 == "A") {
-      card1 = 11;
-    }
-    var card2 = this.state.fourhand[2];
-    if (card2 == "J" || card2 == "Q" || card2 == "K") {
-      card2 = 10;
-    }
-    if (card2 == "A") {
-      card2 = 11;
-    }
-    this.setState({fourscore: card1 + card2});
-    return card1 + card2;
-  },
-
-  getFiveScore: function() {
-    var card1 = this.state.fivehand[0];
-    if (card1 == "J" || card1 == "Q" || card1 == "K") {
-      card1 = 10;
-    }
-    if (card1 == "A") {
-      card1 = 11;
-    }
-    var card2 = this.state.fivehand[2];
-    if (card2 == "J" || card2 == "Q" || card2 == "K") {
-      card2 = 10;
-    }
-    if (card2 == "A") {
-      card2 = 11;
-    }
-    this.setState({fivescore: card1 + card2});
-    return card1 + card2;
-  },
-
-  highestScore: function() {
-    var maxScore = Math.max(this.state.yourscore, this.state.twoscore, this.state.threescore, this.state.fourscore, this.state.fivescore);
-    var toShow = "";
-    if (maxScore == this.state.yourscore) {
-      toShow = toShow + "You" + " ";
-    }
-    if (maxScore == this.state.twoscore) {
-      toShow = toShow + "P2" + " ";
-    }
-    if (maxScore == this.state.threescore) {
-      toShow = toShow + "P3" + " ";
-    }
-    if (maxScore == this.state.fourscore) {
-      toShow = toShow + "P4" + " ";
-    }
-    if (maxScore == this.state.fivescore) {
-      toShow = toShow + "P5" + " ";
-    }
-    return toShow;
   },
 
   render: function() {
@@ -205,7 +99,6 @@ var Board = React.createClass({
                 <h3>Your total: {this.getScore()}</h3>
                 <button onClick={this.handleDeal}>Deal</button>
                 <h4>Your Balance: {this.state.yourbalance}</h4>
-                <h1>The Winner(s): {this.state.highestscore}</h1>
               </div>
           );
       }

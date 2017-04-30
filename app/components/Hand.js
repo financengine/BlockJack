@@ -17,7 +17,8 @@ var Hand = React.createClass({
   render: function () {
     return (
       <div style = {{color: 'white'}}>
-        <h1>{this.props.player}: Card One - {this.props.info[0]}, Suite - {this.props.info[1]} | Card Two - {this.props.info[2]}, Suite Two - {this.props.info[3]}</h1>
+        <h1>{this.props.player}: Card One - {this.props.info[0]} of {this.props.info[1]} | Card Two - {this.props.info[2]} of {this.props.info[3]}</h1>
+        <h2><img src={'./app/component/cards/'+this.props.info[0]+'_'+this.props.info[1]+'.png'} /></h2>
       </div>
       )
     }
