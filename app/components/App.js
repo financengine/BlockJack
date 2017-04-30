@@ -1,8 +1,11 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Blackjackbutton = require('./Blackjackbutton');
-var Pokerbutton = require('./Pokerbutton');
-var NameForm = require('./form');
+
+var Router = require('react-router').Router;
+var Route = require('react-router').Route;
+var browserHistory = require('react-router').browserHistory;
+
+var Welcome = require('./Welcome');
 var Board = require('./Board');
 import Web3 from 'web3';
 const ETHEREUM_CLIENT = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
@@ -11,18 +14,20 @@ var compiledContractData = '0x60606040526078600355600060045560006005556000600655
 
 var blockjackContract = ETHEREUM_CLIENT.eth.contract([{"constant":false,"inputs":[],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"time","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"cardsDrawn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"determineWinner","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getPot","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"pot","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"buyIn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getNumPlayers","outputs":[{"name":"res","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getStageStart","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getFirstCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"ante","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getNumPasses","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"removePlayer","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"numPlayers","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"addFunds","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[],"name":"getAddr","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getScore","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"surrender","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isFull","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"stage","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getAllCards","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"pass","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"dealCards","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"hit","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"addPlayer","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"getCards","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getBuyIn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getStage","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"inputs":[{"name":"randSeed","type":"uint256"},{"name":"playerCap","type":"uint256"},{"name":"bet","type":"uint256"}],"payable":false,"type":"constructor"}]);
 
-var smartContractABI = [{"constant":false,"inputs":[],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"time","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"cardsDrawn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"determineWinner","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getPot","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"pot","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"buyIn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getNumPlayers","outputs":[{"name":"res","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getStageStart","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getFirstCard","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"ante","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getNumPasses","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"removePlayer","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"numPlayers","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"addFunds","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[],"name":"getAddr","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getScore","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"surrender","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"isFull","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"stage","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getAllCards","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"pass","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"dealCards","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"hit","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"randSeed","type":"uint256"}],"name":"addPlayer","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"addr","type":"address"}],"name":"getCards","outputs":[{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getBuyIn","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"getStage","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"inputs":[{"name":"randSeed","type":"uint256"},{"name":"playerCap","type":"uint256"},{"name":"bet","type":"uint256"}],"payable":false,"type":"constructor"}];
+export default class App extends React.Component{
 
-var App = React.createClass({
-
-  getInitialState: function () {
+  getInitialState() {
     return {
-      title: "Welcome To Our Casino!"
+      title: "Welcome To Our Casino!",
+      blockjack: "",
+      buyin: "",
+      yourBalance: 0
     }
-  },
-  startGame: function() {
+  }
+
+  startGame() {
     //var compiled = ETHEREUM_CLIENT.eth.compile.solidity(stringContract);
-    var blockjack = blockjackContract.new(
+    this.setState({blockjack: blockjackContract.new(
      4,
      5,
      6,
@@ -35,22 +40,36 @@ var App = React.createClass({
         if (typeof contract.address !== 'undefined') {
              console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
         }
-     });
-    console.log(blockjack);
-    //const smartContract = ETHEREUM_CLIENT.eth.contract(smartContractABI).new(4, 5, 6);
-    //console.log(smartContract);
-  },
+     })
+   });
+    this.state.blockjack.constructPlayer.call(ETHEREUM_CLIENT.eth.accounts[1], 100, 6);
+    this.state.blockjack.constructPlayer.call(ETHEREUM_CLIENT.eth.accounts[2], 100, 6);
+    this.state.blockjack.constructPlayer.call(ETHEREUM_CLIENT.eth.accounts[3], 100, 6);
+    this.state.blockjack.constructPlayer.call(ETHEREUM_CLIENT.eth.accounts[4], 100, 6);
+  }
 
-  render: function () {
+  getBuyIn() {
+      console.log(this.state.blockjack);
+      //console.log(this.state.blockjack.getBuyIn());
+      console.log(this.state.blockjack.getBuyIn.call().toString());
+      this.setState({buyin: this.state.blockjack.getBuyIn.call().toString()});
+
+  }
+
+  setBalance() {
+      this.setState({yourBalance: this.state.blockjack.getBalance.call().toString()});
+  }
+
+  render() {
 
     return (
-      <div>
-        <button onClick = {this.startGame}>Start Game</button>
-        <Board style = {{color: 'white', border: "1px solid red"}}/>
-      </div>
+      <Router history={browserHistory}>
+        <Route path='/' component={Welcome} props={{'compiledContractData':compiledContractData}} />
+        <Route path="/board" component={Board} props={{'compiledContractData':compiledContractData}} />
+      </Router>
       )
     }
-});
+};
 
 ReactDOM.render(<App />,
                document.getElementById('app'));
