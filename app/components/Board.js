@@ -6,11 +6,11 @@ var Board = React.createClass({
 
   getInitialState: function() {
     return {
-      yourhand: [0, 0, 0, 0],
+      yourhand: [0, 0, 0, 0, 0],
       playeronescore: 0,
-      twohand: [0, 0, 0, 0],
-      threehand: [0,0,0,0],
-      fourhand: [0,0,0,0],
+      twohand: [0, 0, 0, 0, 0],
+      threehand: [0,0,0,0, 0],
+      fourhand: [0,0,0,0, 0],
       fivehand:[0, 0, 0, 0],
       yourbalance: 100,
       twobalance: 100,
@@ -94,7 +94,6 @@ var Board = React.createClass({
               <Hand info = {this.state.threehand} player = "Player three" />
               <Hand info = {this.state.fourhand} player = "Player four" />
               <Hand info = {this.state.fivehand} player = "Player five" />
-
               <Hand info = {this.state.yourhand} player = "Your Hand"/>
                 <h3>Your total: {this.getScore()}</h3>
                 <button onClick={this.handleDeal}>Deal</button>
