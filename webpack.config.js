@@ -13,9 +13,18 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
+      },
+      {
+        test: /\.sol/i,
+        loader: "truffle-solidity-loader"
+      },
+      {
+        test: /\.json$/i,
+        loader: "json-loader"
       }
     ]
   },
+  devtool: 'source-map',
   output: {
     filename: 'transformed.js',
     path: __dirname + '/build'
