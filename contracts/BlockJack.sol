@@ -22,7 +22,7 @@ contract BlockJack {
     uint maxPlayers;
     address[] roundPlayers;
 		address[] allPlayers;
-    address[] winners;
+    address[] winners;	
 		uint timer;
 
     //Player struct to keep track of player data.
@@ -45,9 +45,13 @@ contract BlockJack {
 				_;
 		}
 
-
+ 
 		function nextStage() internal {
 				stage = Stages(uint(stage) + 1);
+				time = now;
+				if (stage == Stages.Deal) {
+					// dealCards();
+				}
 				if (stage == Stages.Play) {
 						timer = now;
 				}
@@ -155,6 +159,7 @@ contract BlockJack {
         roundPlayers.push(msg.sender);
 				if (roundPlayers.length == numPlayers) {
 					nextStage();
+					dealCards();
 				}
     }
 
@@ -346,7 +351,7 @@ contract BlockJack {
         delete roundPlayers;
         delete cardsDrawn;
         delete winners;
-				stage = Stages.AddPlayers;
+				stage = Stages.AnteUp;
     }
 
 		function getBuyIn() returns (uint) {
@@ -407,6 +412,14 @@ contract BlockJack {
 
 		function getStage() returns (Stages) {
 			return stage;
+		}
+
+		function getTurn() returns (uint) {
+			return turn;
+		}
+
+		function getOrder(address addr) returns (uint) {
+			return players[addr].order;
 		}
 
 		function getStageStart() returns (Stages) {

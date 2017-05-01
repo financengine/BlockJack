@@ -8,6 +8,8 @@ import * as _ from 'underscore';
 
 import {Grid, Row, Col, PageHeader, Panel, PanelGroup, Form, FormGroup, FormControl, ControlLabel, Button, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
 
+import Hand from './Hand';
+
 import Web3 from 'web3';
 const ETEHREUM_CLIENT = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
@@ -124,13 +126,38 @@ export default class Welcome extends React.Component{
     this.props.route.ante(event.target.value);
   }
 
+  numberToCard(num) {
+    var deckCard = num % 52;
+    var suite = Math.floor(num / 13); // 0, 1, 2, 3
+    var rank = Math.floor(num / 4) + 2;  // (0 - 12) + 2 J: 11, Q: 12, K: 13, A: 14
+    if (rank == 11) {
+      rank = "Jack";
+    } else if (rank == 12) {
+      rank = "Queen";
+    } else if (rank == 13) {
+      rank = "King";
+    } else if (rank == 14) {
+      rank = "Ace";
+    }
+    if (suite == 0) {
+      suite = "Clubs";
+    } else if (suite == 1) {
+      suite = "Diamonds";
+    } else if (suite == 2) {
+      suite = "Hearts";
+    } else if (suite == 3) {
+      suite = "Spades";
+    }
+    return [rank, suite];
+  }
+
   getData() {
     this.props.route.games.forEach((game) => {
       var address = game.address;
 
       game.getStage.call().then(stage => {
         stage = stage.toNumber();
-        console.log(game)
+        console.log(stage)
         if (stage == 0) {
 
           var promises=[                        
@@ -141,12 +168,10 @@ export default class Welcome extends React.Component{
           ];
 
           Promise.all(promises).then(results => {
-            console.log(results);
             game.balance = results[0];
             game.buyIn = results[1];
             game.allPlayers = results[2];
             game.maxPlayers = results[3];
-            console.log(game.allPlayers);
             game.body = (
               <div>
               <h3><strong>Adding Players</strong> {game.allPlayers.length.toString()} / {game.maxPlayers.toString()}: </h3>
@@ -253,11 +278,84 @@ export default class Welcome extends React.Component{
             this.forceUpdate();
           })
           
+        } else if (stage == 3) {
+
+          var promises=[                        
+            game.getBalance.call(),
+            game.getBuyIn.call(),
+            game.getAllPlayers.call(),
+            game.getMaxPlayers.call(),
+            game.getRoundPlayers.call(),
+            game.getPot.call(),
+            game.getTurn.call(),
+            game.getCards.call(this.props.route.web3.eth.defaultAccount),
+            game.getOrder.call(this.props.route.web3.eth.defaultAccount)
+            
+          ];
+
+          Promise.all(promises).then(results => {
+            game.balance = results[0];
+            game.buyIn = results[1];
+            game.allPlayers = results[2];
+            game.maxPlayers = results[3];
+            game.roundPlayers = results[4];
+            game.pot = results[5];
+            game.turn = results[6];
+            game.cards = [results[7][0].toNumber(), results[7][1].toNumber()];
+            console.log(game.cards);
+            game.order = results[8];
+            game.cardInfo = this.numberToCard(game.cards[0]).concat(this.numberToCard(game.cards[1]))
+            console.log(game.cardInfo);
+
+            game.body = (
+              <div>
+              <h3><strong>Turns</strong></h3>
+              <Row>
+                <Col md={6}>
+                  <ListGroup>
+                    {
+                      _.map(game.roundPlayers, (player) => {
+                        if(game.roundPlayers[game.turn.toNumber()] == player) {
+                          return (<ListGroupItem key={player} active> {player==this.props.route.web3.eth.defaultAccount ? player + ' [you]' : player} </ListGroupItem>)
+                        } else {
+                          return (<ListGroupItem key={player}> {player==this.props.route.web3.eth.defaultAccount ? player + ' [you]' : player} </ListGroupItem>)
+                        }
+                      })
+                    }
+                  </ListGroup>
+                </Col>
+
+                <Col md={2}>
+                  <h4><strong>The Pot:</strong> {game.pot.toString()}<br/></h4>
+                  <h5><strong>Your Balance:</strong> {game.balance.toString()}<br/></h5>
+                  <h5><strong>Ante Amount:</strong> {game.buyIn.toString()}<br/><br/></h5>
+                </Col>
+
+                <Col md={4}>
+                  {
+                    <Hand info={game.cardInfo} />
+                  }
+                </Col>
+              </Row>
+              </div>
+            )
+
+            console.log(! game.allPlayers.includes(this.props.route.web3.eth.defaultAccount))
+
+            if(! game.allPlayers.includes(this.props.route.web3.eth.defaultAccount)) {
+              game.header = (<span><strong>{address}</strong> <span className="pull-right"> <strong>Closed</strong></span></span>)
+            } else if (game.roundPlayers.includes(this.props.route.web3.eth.defaultAccount)) {
+              game.header = (<span><strong>{address}</strong> <span className="pull-right"> <strong> Anted.</strong> [{game.roundPlayers.length.toString()} / {game.allPlayers.length.toString()}]</span></span>)
+            } else {
+              game.header = (<span><strong>{address}</strong> <span className="pull-right"> <strong> Ante Up </strong> [{game.buyIn.toString()} Wei] </span> </span>)
+            }
+
+            this.forceUpdate();
+          })
+            
+           
         }
       });
-
-      game.header = (<span><strong>{address}</strong></span>)
-      game.body = (<span><strong>{address}</strong></span>)
     })
   }
 
