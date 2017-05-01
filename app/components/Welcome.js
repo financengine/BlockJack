@@ -118,6 +118,7 @@ export default class Welcome extends React.Component{
   }
 
   joinGame() {
+    this.closeJoin();
     this.props.route.joinGame(this.state.joinModalGame, this.state.deposit);   
   }
 
@@ -128,25 +129,25 @@ export default class Welcome extends React.Component{
 
   numberToCard(num) {
     var deckCard = num % 52;
-    var suite = Math.floor(num / 13); // 0, 1, 2, 3
-    var rank = Math.floor(num / 4) + 2;  // (0 - 12) + 2 J: 11, Q: 12, K: 13, A: 14
-    if (rank == 11) {
-      rank = "Jack";
+    var suite = num % 4; // 0, 1, 2, 3
+    var rank = num % 13;  // (0 - 12) + 2 J: 11, Q: 12, K: 13, A: 14
+    if (rank == 10) {
+      rank = "jack";
+    } else if (rank == 11) {
+      rank = "queen";
     } else if (rank == 12) {
-      rank = "Queen";
-    } else if (rank == 13) {
-      rank = "King";
-    } else if (rank == 14) {
-      rank = "Ace";
+      rank = "king";
+    } else if (rank == 0) {
+      rank = "ace";
     }
     if (suite == 0) {
-      suite = "Clubs";
+      suite = "clubs";
     } else if (suite == 1) {
-      suite = "Diamonds";
+      suite = "diamonds";
     } else if (suite == 2) {
-      suite = "Hearts";
+      suite = "hearts";
     } else if (suite == 3) {
-      suite = "Spades";
+      suite = "spades";
     }
     return [rank, suite];
   }
@@ -304,8 +305,6 @@ export default class Welcome extends React.Component{
             game.cards = [results[7][0].toNumber(), results[7][1].toNumber()];
             console.log(game.cards);
             game.order = results[8];
-            game.cardInfo = this.numberToCard(game.cards[0]).concat(this.numberToCard(game.cards[1]))
-            console.log(game.cardInfo);
 
             game.body = (
               <div>
@@ -332,9 +331,13 @@ export default class Welcome extends React.Component{
                 </Col>
 
                 <Col md={4}>
-                  {
-                    <Hand info={game.cardInfo} />
-                  }
+                    <h1>Your Cards:</h1> <br/>
+                    {
+                      _.map(game.cards, (cardNum) => {
+                        var card = this.numberToCard(cardNum);
+                        return <img key={cardNum} src={'./../../cards/'+ card[0] +'_of_'+ card[1] +'.png'} style={{width: 100, height: 150}} />
+                      })
+                    }
                 </Col>
               </Row>
               </div>
