@@ -301,10 +301,10 @@ export default class Welcome extends React.Component{
             game.maxPlayers = results[3];
             game.roundPlayers = results[4];
             game.pot = results[5];
-            game.turn = results[6];
+            game.turn = results[6].toNumber();
             game.cards = [results[7][0].toNumber(), results[7][1].toNumber()];
             console.log(game.cards);
-            game.order = results[8];
+            game.order = results[8].toNumber();
 
             game.body = (
               <div>
@@ -343,14 +343,12 @@ export default class Welcome extends React.Component{
               </div>
             )
 
-            console.log(! game.allPlayers.includes(this.props.route.web3.eth.defaultAccount))
-
             if(! game.allPlayers.includes(this.props.route.web3.eth.defaultAccount)) {
               game.header = (<span><strong>{address}</strong> <span className="pull-right"> <strong>Closed</strong></span></span>)
-            } else if (game.roundPlayers.includes(this.props.route.web3.eth.defaultAccount)) {
-              game.header = (<span><strong>{address}</strong> <span className="pull-right"> <strong> Anted.</strong> [{game.roundPlayers.length.toString()} / {game.allPlayers.length.toString()}]</span></span>)
+            } else if (game.turn != game.order) {
+              game.header = (<span><strong>{address}</strong> <span className="pull-right"> <strong> Game in progress.</strong></span></span>)
             } else {
-              game.header = (<span><strong>{address}</strong> <span className="pull-right"> <strong> Ante Up </strong> [{game.buyIn.toString()} Wei] </span> </span>)
+              game.header = (<span><strong>{address}</strong> <span className="pull-right"> <strong> Make your move </strong></span> </span>)
             }
 
             this.forceUpdate();
