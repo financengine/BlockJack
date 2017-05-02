@@ -6,7 +6,7 @@ var Route = require('react-router').Route;
 
 import * as _ from 'underscore';
 
-import {Grid, Row, Col, PageHeader, Panel, PanelGroup, Form, FormGroup, FormControl, ControlLabel, Button, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Grid, Row, Col, PageHeader, Panel, PanelGroup, Form, FormGroup, FormControl, ControlLabel, Button, ButtonToolbar, Modal, ListGroup, ListGroupItem} from 'react-bootstrap';
 
 import Hand from './Hand';
 
@@ -127,6 +127,26 @@ export default class Welcome extends React.Component{
     this.props.route.ante(event.target.value);
   }
 
+  hit(event) {
+    event.preventDefault();
+    this.props.route.hit(event.target.value);
+  }
+
+  pass(event) {
+    event.preventDefault();
+    this.props.route.pass(event.target.value);
+  }
+
+  split(event) {
+    event.preventDefault();
+    this.props.route.split(event.target.value);
+  }
+
+  surrender(event) {
+    event.preventDefault();
+    this.props.route.surrender(event.target.value);
+  }
+
   numberToCard(num) {
     var deckCard = num % 52;
     var suite = num % 4; // 0, 1, 2, 3
@@ -139,6 +159,8 @@ export default class Welcome extends React.Component{
       rank = "king";
     } else if (rank == 0) {
       rank = "ace";
+    } else {
+      rank += 1;
     }
     if (suite == 0) {
       suite = "clubs";
@@ -158,7 +180,6 @@ export default class Welcome extends React.Component{
 
       game.getStage.call().then(stage => {
         stage = stage.toNumber();
-        console.log(stage)
         if (stage == 0) {
 
           var promises=[                        
@@ -302,7 +323,8 @@ export default class Welcome extends React.Component{
             game.roundPlayers = results[4];
             game.pot = results[5];
             game.turn = results[6].toNumber();
-            game.cards = [results[7][0].toNumber(), results[7][1].toNumber()];
+            console.log(results[7].length)
+            game.cards = _.map(results[7], (card) => card.toNumber());
             console.log(game.cards);
             game.order = results[8].toNumber();
 
@@ -314,7 +336,7 @@ export default class Welcome extends React.Component{
                   <ListGroup>
                     {
                       _.map(game.roundPlayers, (player) => {
-                        if(game.roundPlayers[game.turn.toNumber()] == player) {
+                        if(game.order == game.turn) {
                           return (<ListGroupItem key={player} active> {player==this.props.route.web3.eth.defaultAccount ? player + ' [you]' : player} </ListGroupItem>)
                         } else {
                           return (<ListGroupItem key={player}> {player==this.props.route.web3.eth.defaultAccount ? player + ' [you]' : player} </ListGroupItem>)
@@ -338,6 +360,13 @@ export default class Welcome extends React.Component{
                         return <img key={cardNum} src={'./../../cards/'+ card[0] +'_of_'+ card[1] +'.png'} style={{width: 100, height: 150}} />
                       })
                     }
+                    <br/><br/><br/>
+                    <ButtonToolbar>
+                      <Button type="submit" value={address} onClick={this.hit.bind(this)} >Hit</Button>
+                      <Button type="submit" value={address} onClick={this.pass.bind(this)} >Pass</Button>
+                      <Button type="submit" value={address} onClick={this.surrender.bind(this)} >Surrender</Button>
+                      <Button type="submit" value={address} onClick={this.split.bind(this)} >Split</Button>
+                    </ButtonToolbar>
                 </Col>
               </Row>
               </div>

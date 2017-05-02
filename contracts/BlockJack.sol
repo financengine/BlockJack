@@ -22,7 +22,7 @@ contract BlockJack {
     uint maxPlayers;
     address[] roundPlayers;
 		address[] allPlayers;
-    address[] winners;	
+    address[] winners;
 		uint timer;
 
     //Player struct to keep track of player data.
@@ -46,7 +46,7 @@ contract BlockJack {
 				_;
 		}
 
- 
+
 		function nextStage() internal {
 				stage = Stages(uint(stage) + 1);
 				time = now;
@@ -73,7 +73,7 @@ contract BlockJack {
     //transaction is the minimum buy in.
     function BlockJack(uint randSeed, uint playerCap, uint bet) {
           buyIn = bet;
-          randNum = block.timestamp + randSeed;
+          randNum = uint(sha3(block.timestamp,randSeed,now));
           maxPlayers = playerCap;
 					numPlayers = 0;
     }
@@ -176,7 +176,7 @@ contract BlockJack {
             uint card = drawCard(player);
             cardsDrawn.push(card);
             player.hand.push(card);
-						randNum = randNum * card;
+						randNum = uint(sha3(randNum,card,now));
         }
 				for (uint j = 0; j < roundPlayers.length; j++) {
 					player = players[roundPlayers[j]];
@@ -192,7 +192,7 @@ contract BlockJack {
 				timedTransitions
 				atStage(Stages.Play)
 				returns (uint) {
-        uint card = (player.randSeed * randNum + block.timestamp) % 416;
+        uint card = (player.randSeed * randNum + block.timestamp * now) % 416;
 				bool loop = true;
 				player.randSeed += card;
 				while (loop) {

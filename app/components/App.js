@@ -63,6 +63,30 @@ export default class App extends React.Component {
     });
   }
 
+  hit(address) {
+    this.props.BlockJack.at(address).hit.sendTransaction(this.randomSeed(), {gas:4700000}).then((instance) => {
+      this.forceUpdate();
+    });
+  }
+
+  pass(address) {
+    this.props.BlockJack.at(address).pass.sendTransaction(this.randomSeed(), {gas:4700000}).then((instance) => {
+      this.forceUpdate();
+    });
+  }
+
+  split(address) {
+    this.props.BlockJack.at(address).split.sendTransaction(this.randomSeed(), {gas:4700000}).then((instance) => {
+      this.forceUpdate();
+    });
+  }
+
+  surrender(address) {
+    this.props.BlockJack.at(address).surrender.sendTransaction(this.randomSeed(), {gas:4700000}).then((instance) => {
+      this.forceUpdate();
+    });
+  }
+
   render() {
     return (
     	<div>
@@ -83,7 +107,7 @@ export default class App extends React.Component {
     		</Navbar>
 
 	      <Router history={browserHistory}>
-	        <Route path='/' component={Welcome} ante={this.ante.bind(this)} addGame={this.addGame.bind(this)} joinGame={this.joinGame.bind(this)} web3={this.props.web3} createGame={this.createGame.bind(this)} games={this.state.games} BlockJack={this.props.BlockJack} />
+	        <Route path='/' component={Welcome} ante={this.ante.bind(this)} hit={this.hit.bind(this)} pass={this.pass.bind(this)} split={this.split.bind(this)} surrender={this.surrender.bind(this)} addGame={this.addGame.bind(this)} joinGame={this.joinGame.bind(this)} web3={this.props.web3} createGame={this.createGame.bind(this)} games={this.state.games} BlockJack={this.props.BlockJack} />
 	      </Router>
       </div>
       )
